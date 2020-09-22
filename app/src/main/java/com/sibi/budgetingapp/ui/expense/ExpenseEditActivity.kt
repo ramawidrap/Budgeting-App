@@ -1,25 +1,16 @@
 package com.sibi.budgetingapp.ui.expense
 
-import android.app.DatePickerDialog
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.model.Expense
-import com.sibi.budgetingapp.model.Income
-import com.sibi.budgetingapp.source.viewmodel.ExpenseViewModel
 import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
-import com.sibi.budgetingapp.ui.MainActivity
 import com.sibi.budgetingapp.utils.setCalendar
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_expense_edit.*
-import java.util.*
 import javax.inject.Inject
 
 

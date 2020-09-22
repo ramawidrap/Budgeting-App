@@ -1,11 +1,13 @@
 package com.sibi.budgetingapp.source.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.sibi.budgetingapp.model.Expense
 import com.sibi.budgetingapp.model.Income
 import com.sibi.budgetingapp.source.repository.ExpenseRepository
 import com.sibi.budgetingapp.source.repository.IncomeRepository
+import com.sibi.budgetingapp.source.repository.TypeUpdate
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
@@ -23,7 +25,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
 
-    fun getUpdatedDataExpense(): LiveData<Pair<String, Int>> {
+    fun getUpdatedDataExpense(): LiveData<TypeUpdate> {
         return expenseRepository.dataUpdated
     }
 
@@ -35,6 +37,16 @@ class MainActivityViewModel @Inject constructor(
     fun getDataExpense(): LiveData<HashMap<String, ArrayList<Expense>>> {
         return expenseRepository.dataExpense;
     }
+
+    fun getDataIncomeThisMonth() : LiveData<Pair<Int,Int>> {
+        return incomeRepository.dataIncomeThisMonth
+    }
+
+    fun getDataExpenseThisMonth() : LiveData<Pair<Int,Int>> {
+        return expenseRepository.dataTotalThisMonth
+    }
+
+
 
     fun insertDataExpense(expense: Expense) {
         expenseRepository.insertData(expense)

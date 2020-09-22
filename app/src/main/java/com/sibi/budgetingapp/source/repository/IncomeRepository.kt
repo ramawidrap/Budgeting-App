@@ -8,7 +8,10 @@ import com.sibi.budgetingapp.utils.formatDate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 const val TAG = "IncomeRepositoy";
 
@@ -18,6 +21,8 @@ class IncomeRepository (val incomeDao: IncomeDao) {
     val dataIncome = MutableLiveData<HashMap<String, ArrayList<Income>>>()
     private var totalIncome = 0;
     val dataTotalIncome = MutableLiveData<Int>()
+    val dataIncomeThisMonth = MutableLiveData<Pair<Int,Int>>()
+    private var totalThisMonth = 0
 
     init {
         getData()
@@ -26,6 +31,8 @@ class IncomeRepository (val incomeDao: IncomeDao) {
 
 
     fun getData() {
+
+        var month =Calendar.getInstance().get(Calendar.MONTH)+1
         dispose.add(
             incomeDao.getAll().subscribeOn(Schedulers.computation()).observeOn(
                 AndroidSchedulers.mainThread()
@@ -36,6 +43,10 @@ class IncomeRepository (val incomeDao: IncomeDao) {
                     totalIncome = 0
                 }
                 incomes.map { income ->
+                    println("cek month ${month} ${income.date.split("/")[1]}")
+                    if(month.toString() == income.date.split("/")[1]) {
+                        totalThisMonth+=income.amount
+                    }
                     totalIncome += income.amount
                     val key = formatDate(income.date)
                     if (mapIncome.containsKey(key)) {
@@ -49,6 +60,8 @@ class IncomeRepository (val incomeDao: IncomeDao) {
                 }
                 dataTotalIncome.postValue(totalIncome)
                 dataIncome.postValue(mapIncome)
+                dataIncomeThisMonth.postValue(Pair(month,totalThisMonth))
+                totalThisMonth = 0
             }, {
                 println("throwww")
             })

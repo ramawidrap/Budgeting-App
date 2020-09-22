@@ -1,18 +1,13 @@
 package com.sibi.budgetingapp.ui.income
 
-import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
-import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.model.Income
-import com.sibi.budgetingapp.source.viewmodel.IncomeViewModel
 import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
 import com.sibi.budgetingapp.utils.setCalendar
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_income_edit.*
-import java.util.*
 import javax.inject.Inject
 
 

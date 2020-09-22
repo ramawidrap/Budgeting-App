@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sibi.budgetingapp.R
-import com.sibi.budgetingapp.source.viewmodel.IncomeViewModel
 import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_income.*
@@ -42,9 +41,6 @@ class IncomeFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        incomeViewModel.getTotalIncome().observe(this.viewLifecycleOwner, Observer {
-            println("HAHAHAHAHAH KE UBAH")
-        })
         incomeViewModel.getDataIncome().observe(this.viewLifecycleOwner, Observer { data ->
             if (isInitUI) {
                 incomeAdapter =

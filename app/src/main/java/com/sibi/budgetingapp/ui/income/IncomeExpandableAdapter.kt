@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.model.Income
-import com.sibi.budgetingapp.source.viewmodel.IncomeViewModel
 import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
 
 class IncomeExpandableAdapter(

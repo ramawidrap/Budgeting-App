@@ -3,6 +3,7 @@ package com.sibi.budgetingapp.ui
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
@@ -25,13 +26,17 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private var totalExpense = 0
 
+    private var incomeThisMonth = 0
+    private var expenseThisMonth = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val sharedPref = getSharedPreferences("BUDGET", Context.MODE_PRIVATE)
+        supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.mainColor)))
         mainActivityViewModel =
             ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
-//        mainActivityViewModel.setData(this)
+        val sharedPref = getSharedPreferences("BUDGET", Context.MODE_PRIVATE)
+
         mainActivityViewModel.getTotalExpense().observe(this, Observer { total ->
             totalExpense = total
             tv_valueBalance.setText("Rp${(totalIncome - totalExpense)}")
@@ -39,7 +44,10 @@ class MainActivity : DaggerAppCompatActivity() {
         })
         view_pager.adapter = ViewPagerAdapter(supportFragmentManager)
 
-
+        button_budget.setOnClickListener {
+            val intent = Intent(this, DetailBudgetActivity::class.java)
+            startActivity(intent)
+        }
 
         mainActivityViewModel.getTotalIncome().observe(this, Observer { total ->
             totalIncome = total
@@ -47,31 +55,54 @@ class MainActivity : DaggerAppCompatActivity() {
             tv_totalIncome.setText("Total Income:\n Rp${totalIncome}")
         })
 
-        button_budget.setOnClickListener {
-            val intent = Intent(this, DetailBudgetActivity::class.java)
-            startActivity(intent)
-        }
+        mainActivityViewModel.getDataIncomeThisMonth().observe(this, Observer { income ->
+            println("income this month ${income.second}")
+            incomeThisMonth = income.second
+            updateSaving()
+
+        })
+
+        mainActivityViewModel.getDataExpenseThisMonth().observe(this, Observer { expense ->
+            println("expense this month ${expense.second}")
+
+            expenseThisMonth = expense.second
+            updateSaving()
+        })
 
         mainActivityViewModel.getUpdatedDataExpense().removeObservers(this)
         mainActivityViewModel.getUpdatedDataExpense().observe(this, Observer { updatedData ->
             mainActivityViewModel.getAllTypeExpense().removeObservers(this)
             mainActivityViewModel.getAllTypeExpense().observe(this, Observer { map ->
-                val key = "notif${updatedData.first}"
+                val key = "notif${updatedData.category}"
                 val budget = sharedPref.getInt(key, 0)
-                val total = map[updatedData.first] ?: 0
+                val total = map[updatedData.category] ?: 0
 
                 //add
-                if (budget != 0) {
-                    if (total >= budget) {
-                        sharedPref.edit().putInt(key,budget+100).apply()
-                        showAlert(updatedData.first)
+                if (updatedData.type == 0) {
+                    if (budget != 0) {
+                        if (total >= budget) {
+                            sharedPref.edit().putInt(key, budget + 100).apply()
+                            showAlert(updatedData.category)
 
+                        }
                     }
-
                 }
+
             })
 
         })
+
+    }
+
+
+    private fun updateSaving() {
+        if (incomeThisMonth == 0) {
+            tv_totalSaving.setText("0%")
+        } else {
+            val result = (((incomeThisMonth - expenseThisMonth).toDouble() / incomeThisMonth) * 100)
+            val rounded = String.format("%.1f", result).toDouble().toString()
+            tv_totalSaving.setText("$rounded%")
+        }
     }
 
     fun showAlert(type: String) {

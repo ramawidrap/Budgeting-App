@@ -11,6 +11,7 @@
         android:layout_width="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:backgroundTint="@color/mainColor"
         android:id="@+id/fab_expense"
         android:layout_margin="30dp"
         android:layout_gravity="bottom|end"

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sibi.budgetingapp.R
-import com.sibi.budgetingapp.source.viewmodel.ExpenseViewModel
 import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_expense.*
@@ -46,7 +45,6 @@ class ExpenseFragment : DaggerFragment() {
 
 
         expenseViewModel.getDataExpense().observe(this.viewLifecycleOwner, Observer { data ->
-            println("mantullllll")
             Log.i("IncomeFragment", "$data");
 
             if (isInitUI) {

@@ -14,9 +14,6 @@
         <activity android:name=".ui.BudgetActivity" />
         <activity android:name=".ui.expense.ExpenseEditActivity" />
         <activity android:name=".ui.income.IncomeEditActivity" />
-        <activity
-            android:name=".ui.login.EditActivity"
-            android:label="@string/title_activity_edit" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

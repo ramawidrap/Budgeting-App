@@ -2,6 +2,7 @@ package com.sibi.budgetingapp.ui
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -15,6 +16,7 @@ class BudgetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_budget)
+        supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.mainColor)))
 
         val sharedPref = getSharedPreferences("BUDGET", Context.MODE_PRIVATE)
 

@@ -2,8 +2,6 @@ package com.sibi.budgetingapp.di
 
 import com.sibi.budgetingapp.di.viewmodel_module.DetailBudgetViewModelModule
 import com.sibi.budgetingapp.ui.MainActivity
-import com.sibi.budgetingapp.di.viewmodel_module.ExpenseViewModelModule
-import com.sibi.budgetingapp.di.viewmodel_module.IncomeViewModelModule
 import com.sibi.budgetingapp.di.viewmodel_module.MainActivityViewModelModule
 import com.sibi.budgetingapp.ui.DetailBudgetActivity
 import com.sibi.budgetingapp.ui.expense.ExpenseEditActivity

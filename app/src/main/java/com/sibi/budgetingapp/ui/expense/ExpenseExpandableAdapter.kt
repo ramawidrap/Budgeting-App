@@ -11,10 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.model.Expense
-import com.sibi.budgetingapp.model.Income
-import com.sibi.budgetingapp.source.viewmodel.ExpenseViewModel
 import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
-import com.sibi.budgetingapp.ui.income.IncomeEditActivity
 
 class ExpenseExpandableAdapter(
     private val context: Context,
