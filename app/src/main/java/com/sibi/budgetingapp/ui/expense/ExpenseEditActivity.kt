@@ -14,6 +14,7 @@ import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.model.Expense
 import com.sibi.budgetingapp.model.Income
 import com.sibi.budgetingapp.source.viewmodel.ExpenseViewModel
+import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
 import com.sibi.budgetingapp.ui.MainActivity
 import com.sibi.budgetingapp.utils.setCalendar
 import dagger.android.support.DaggerAppCompatActivity
@@ -27,7 +28,7 @@ class ExpenseEditActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var expenseViewModel: ExpenseViewModel
+    private lateinit var expenseViewModel: MainActivityViewModel
 
     private var selectedType = 1
 
@@ -35,7 +36,7 @@ class ExpenseEditActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_expense_edit)
 
-        expenseViewModel = ViewModelProvider(this,viewModelFactory).get(ExpenseViewModel::class.java)
+        expenseViewModel = ViewModelProvider(this,viewModelFactory).get(MainActivityViewModel::class.java)
         val expense = intent.getParcelableExtra<Expense>("expense")
         bindToView(expense)
 
@@ -63,7 +64,7 @@ class ExpenseEditActivity : DaggerAppCompatActivity() {
             val _selectedExpense = expenseType[selectedType]
 
             if (expense == null) {
-                expenseViewModel.insertData(
+                expenseViewModel.insertDataExpense(
                     Expense(
                         0,
                         title,
@@ -80,11 +81,9 @@ class ExpenseEditActivity : DaggerAppCompatActivity() {
                 expense.deskripsi = deskripsi
                 expense.type = expenseType[selectedType]
                 expense.amount = amount
-                expenseViewModel.updateData(expense)
+                expenseViewModel.updateDataExpense(expense)
             }
-            val intent = Intent(this, MainActivity::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
+            finish()
         }
     }
 

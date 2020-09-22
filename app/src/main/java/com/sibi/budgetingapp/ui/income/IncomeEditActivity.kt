@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.model.Income
 import com.sibi.budgetingapp.source.viewmodel.IncomeViewModel
+import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
 import com.sibi.budgetingapp.utils.setCalendar
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_income_edit.*
@@ -20,13 +21,13 @@ class IncomeEditActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var incomeViewModel: IncomeViewModel
+    lateinit var incomeViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_income_edit)
         val income = intent.getParcelableExtra<Income>("income")
-        incomeViewModel = ViewModelProvider(this, viewModelFactory).get(IncomeViewModel::class.java)
+        incomeViewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
         bindToView(income)
 
 
@@ -72,14 +73,14 @@ class IncomeEditActivity : DaggerAppCompatActivity() {
             val date = et_datePicker.text.toString()
             val deskripsi = et_deskripsi.text.toString()
             if (income == null) {
-                incomeViewModel.insertData(Income(0,title, amount, deskripsi, date))
+                incomeViewModel.insertDataIncome(Income(0,title, amount, deskripsi, date))
             } else {
                 income.id = income.id
                 income.title = title
                 income.date = date
                 income.deskripsi = deskripsi
                 income.amount = amount
-                incomeViewModel.updateData(income)
+                incomeViewModel.updateDataIncome(income)
             }
             finish()
         }

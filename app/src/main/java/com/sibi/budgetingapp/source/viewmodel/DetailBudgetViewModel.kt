@@ -12,7 +12,6 @@ class DetailBudgetViewModel @Inject constructor(private val expenseRepository: E
     }
 
     fun getExpenseAllType() : LiveData<HashMap<String,Int>>{
-        expenseRepository.getExpenseAllType()
         return expenseRepository.dataTotalExpenseAllType
     }
 }

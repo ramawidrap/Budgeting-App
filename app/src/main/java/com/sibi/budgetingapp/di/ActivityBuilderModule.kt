@@ -13,13 +13,13 @@ import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class ActivityBuilderModule {
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class,MainActivityViewModelModule::class])
+    @ContributesAndroidInjector(modules = [SharedModule::class,MainActivityViewModelModule::class])
     abstract fun contributeMainActivity() : MainActivity
 
-    @ContributesAndroidInjector(modules = [IncomeViewModelModule::class])
-    abstract fun contributeEditActivity() : IncomeEditActivity
+    @ContributesAndroidInjector(modules = [MainActivityViewModelModule::class])
+    abstract fun contributeIncomeEditActivity() : IncomeEditActivity
 
-    @ContributesAndroidInjector(modules = [ExpenseViewModelModule::class])
+    @ContributesAndroidInjector(modules = [MainActivityViewModelModule::class])
     abstract fun contributeExpenseEditActivity() : ExpenseEditActivity
 
     @ContributesAndroidInjector(modules = [DetailBudgetViewModelModule::class])

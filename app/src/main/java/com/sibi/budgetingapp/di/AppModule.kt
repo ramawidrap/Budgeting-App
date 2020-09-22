@@ -6,6 +6,7 @@ import com.sibi.budgetingapp.source.db.AppDatabase
 import com.sibi.budgetingapp.source.db.ExpenseDao
 import com.sibi.budgetingapp.source.db.IncomeDao
 import com.sibi.budgetingapp.source.repository.ExpenseRepository
+import com.sibi.budgetingapp.source.repository.IncomeRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -36,10 +37,10 @@ class AppModule {
         return ExpenseRepository(expenseDao)
     }
 
-//    @Singleton
-//    @Provides
-//    fun provideGeneralDao(appDatabase: AppDatabase) : GeneralDao {
-//        return appDatabase.generalDao()
-//    }
+    @Singleton
+    @Provides
+    fun provideIncomeRepository(incomeDao: IncomeDao) : IncomeRepository {
+        return IncomeRepository(incomeDao)
+    }
 
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.source.viewmodel.IncomeViewModel
+import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_income.*
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class IncomeFragment : DaggerFragment() {
     @Inject
     lateinit var vieweModelFactory: ViewModelProvider.Factory
 
-    private lateinit var incomeViewModel: IncomeViewModel
+    private lateinit var incomeViewModel: MainActivityViewModel
 
     private lateinit var incomeAdapter: IncomeExpandableAdapter
 
@@ -27,7 +28,7 @@ class IncomeFragment : DaggerFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         incomeViewModel =
-            ViewModelProvider(this, vieweModelFactory).get(IncomeViewModel::class.java)
+            ViewModelProvider(this, vieweModelFactory).get(MainActivityViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -41,10 +42,10 @@ class IncomeFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        incomeViewModel.getTotal().observe(this.viewLifecycleOwner, Observer {
+        incomeViewModel.getTotalIncome().observe(this.viewLifecycleOwner, Observer {
             println("HAHAHAHAHAH KE UBAH")
         })
-        incomeViewModel.getData().observe(this.viewLifecycleOwner, Observer { data ->
+        incomeViewModel.getDataIncome().observe(this.viewLifecycleOwner, Observer { data ->
             if (isInitUI) {
                 incomeAdapter =
                     IncomeExpandableAdapter(

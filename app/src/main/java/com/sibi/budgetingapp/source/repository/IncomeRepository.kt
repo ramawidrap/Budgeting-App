@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.sibi.budgetingapp.model.Income
 import com.sibi.budgetingapp.source.db.IncomeDao
+import com.sibi.budgetingapp.utils.formatDate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 const val TAG = "IncomeRepositoy";
 
-class IncomeRepository @Inject constructor(val incomeDao: IncomeDao) {
+class IncomeRepository (val incomeDao: IncomeDao) {
 
     private val dispose: CompositeDisposable = CompositeDisposable()
     val dataIncome = MutableLiveData<HashMap<String, ArrayList<Income>>>()
@@ -36,13 +37,14 @@ class IncomeRepository @Inject constructor(val incomeDao: IncomeDao) {
                 }
                 incomes.map { income ->
                     totalIncome += income.amount
-                    if (mapIncome.containsKey(income.date)) {
-                        mapIncome[income.date]!!.add(income);
-                        mapIncome.put(income.date, mapIncome[income.date]!!)
+                    val key = formatDate(income.date)
+                    if (mapIncome.containsKey(key)) {
+                        mapIncome[key]!!.add(income);
+                        mapIncome.put(key, mapIncome[key]!!)
                     } else {
                         val arrayIncome = ArrayList<Income>()
                         arrayIncome.add(income)
-                        mapIncome.put(income.date, arrayIncome)
+                        mapIncome.put(key, arrayIncome)
                     }
                 }
                 dataTotalIncome.postValue(totalIncome)

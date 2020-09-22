@@ -1,5 +1,6 @@
 package com.sibi.budgetingapp.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -28,10 +29,9 @@ class DetailBudgetActivity : DaggerAppCompatActivity() {
 
         val sharedPref = getSharedPreferences("BUDGET",Context.MODE_PRIVATE)
         val budgetStr = sharedPref.getString("budget", "")
-        println(budgetStr)
         btn_goToBudgetActivity.setOnClickListener {
             val intent = Intent(this,BudgetActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent,0)
         }
         if (budgetStr!= "") {
             val budget = Gson().fromJson(budgetStr, Budget::class.java)
@@ -49,13 +49,33 @@ class DetailBudgetActivity : DaggerAppCompatActivity() {
         pb_others.max = budget.other
 
         detailBudgetViewModel.getExpenseAllType().observe(this, Observer {
+            val progress_shopping = it.get("Shopping") ?: 0
+            val progress_entertainment = it.get("Entertainment") ?: 0
+            val progress_transportation = it.get("Transportation") ?: 0
+            val progress_foods = it.get("Foods") ?: 0
+            val progress_others = it.get("Others") ?: 0
+            println("wkwkwk $it")
             pb_shopping.progress = it.get("Shopping") ?: 0
             pb_entertainment.progress = it.get("Entertainment") ?: 0
             pb_transportation.progress = it.get("Transportation") ?: 0
             pb_foods.progress = it.get("Foods") ?: 0
             pb_others.progress = it.get("Others") ?: 0
+
+            param_shopping.setText("$progress_shopping/${pb_shopping.max}")
+            param_entertainment.setText("$progress_entertainment/${pb_entertainment.max}")
+            param_transportation.setText("$progress_entertainment/${pb_transportation.max}")
+            param_foods.setText("$progress_foods/${pb_foods.max}")
+            param_others.setText("$progress_others/${pb_others.max}")
         })
 
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        println("get request code bro $requestCode")
+        if(resultCode == Activity.RESULT_OK) {
+            finish()
+        }
     }
 }

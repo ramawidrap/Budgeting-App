@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.source.viewmodel.ExpenseViewModel
+import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_expense.*
 import javax.inject.Inject
@@ -20,7 +21,7 @@ class ExpenseFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var expenseViewModel: ExpenseViewModel
+    private lateinit var expenseViewModel: MainActivityViewModel
 
     private var isInitUI = true;
 
@@ -30,7 +31,7 @@ class ExpenseFragment : DaggerFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         expenseViewModel =
-            ViewModelProvider(this, viewModelFactory).get(ExpenseViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -44,7 +45,7 @@ class ExpenseFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        expenseViewModel.getData().observe(this.viewLifecycleOwner, Observer { data ->
+        expenseViewModel.getDataExpense().observe(this.viewLifecycleOwner, Observer { data ->
             println("mantullllll")
             Log.i("IncomeFragment", "$data");
 

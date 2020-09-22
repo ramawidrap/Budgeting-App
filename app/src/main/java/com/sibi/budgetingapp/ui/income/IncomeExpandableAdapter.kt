@@ -12,11 +12,12 @@ import android.widget.TextView
 import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.model.Income
 import com.sibi.budgetingapp.source.viewmodel.IncomeViewModel
+import com.sibi.budgetingapp.source.viewmodel.MainActivityViewModel
 
 class IncomeExpandableAdapter(
     private val context: Context,
     private val rv_income : ExpandableListView,
-    private val incomeViewModel: IncomeViewModel,
+    private val incomeViewModel: MainActivityViewModel,
     var hashMap: HashMap<String, ArrayList<Income>>,
     var headerList: List<String>
 ) : BaseExpandableListAdapter() {
@@ -96,11 +97,11 @@ class IncomeExpandableAdapter(
         val deleteIcon = convertView.findViewById<ImageView>(R.id.icon_delete)
         val editIcon = convertView.findViewById<ImageView>(R.id.icon_edit)
         name.text = child.title
-        value.text = child.amount.toString()
+        value.text = "Rp${child.amount}"
         tanggal.text = child.date
 
         deleteIcon.setOnClickListener {
-            incomeViewModel.deleteData(child as Income);
+            incomeViewModel.deleteDataIncome(child as Income);
             for(x in 0 until groupCount) {
                 if(rv_income.isGroupExpanded(x)) {
                     rv_income.expandGroup(x)

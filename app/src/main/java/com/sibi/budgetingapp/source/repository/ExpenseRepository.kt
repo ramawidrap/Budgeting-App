@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.sibi.budgetingapp.model.Expense
 import com.sibi.budgetingapp.source.db.ExpenseDao
+import com.sibi.budgetingapp.utils.formatDate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -19,8 +20,10 @@ class ExpenseRepository(val expenseDao: ExpenseDao) {
     var dataTotalExpenseByType = MutableLiveData<Int>()
     var dataTotalExpenseAllType = MutableLiveData<HashMap<String, Int>>()
     val dataShowNotif = MutableLiveData<Boolean>()
-    private val map = HashMap<String, Int>()
-   val dataUpdated = MutableLiveData<Pair<String,Int>>()
+
+
+
+    val dataUpdated = MutableLiveData<Pair<String,Int>>()
 
     init {
         getData()
@@ -36,45 +39,38 @@ class ExpenseRepository(val expenseDao: ExpenseDao) {
             expenseDao.getAll().subscribeOn(Schedulers.computation()).observeOn(
                 AndroidSchedulers.mainThread()
             ).subscribe({ expenses ->
-                print("cek update")
+                val map = HashMap<String, Int>()
+                println("cek update $expenses")
                 val mapExpense = HashMap<String, ArrayList<Expense>>()
                 val listHeader = ArrayList<String>()
                 if (expenses.isEmpty()) {
                     totalExpense = 0
                 }
-                expenses.map { expense ->
+                expenses.forEach{ expense ->
+                    println("for each ${map[expense.type]} ${expense.amount}")
+                    map.put(expense.type,(map[expense.type] ?: 0) + expense.amount)
+                    println("iterate expense ${map[expense.type]}")
                     totalExpense += expense.amount
-//                    val notifInt = sharedPref.getInt(expense.type, -1)
-//                    if (notifInt != -1) {
-//
-//                        if (notifInt - expense.amount <= 0) {
-//                            dataShowNotif.postValue(true)
-//                            sharedPref.edit()
-//                                .putInt(expense.type, 100 - Math.abs(notifInt - expense.amount))
-//                                .apply()
-//                            dataShowNotif.postValue(false)
-//                        } else {
-//                            sharedPref.edit().putInt(expense.type, notifInt - expense.amount)
-//                                .apply()
-//                        }
-//                    }
 
 
 
-                    if (mapExpense.containsKey(expense.date)) {
-                        mapExpense[expense.date]!!.add(expense);
-                        mapExpense.put(expense.date, mapExpense[expense.date]!!)
+                    val key = formatDate(expense.date)
+                    println("cek key expense brok di convert")
+                    if (mapExpense.containsKey(key)) {
+                        mapExpense[key]!!.add(expense);
+                        mapExpense.put(key, mapExpense[key]!!)
                     } else {
                         val arrayExpense = ArrayList<Expense>()
                         arrayExpense.add(expense)
-                        mapExpense.put(expense.date, arrayExpense)
+                        mapExpense.put(key, arrayExpense)
                     }
                 }
+                dataTotalExpenseAllType.postValue(map)
                 dataTotalExpense.value = totalExpense
                 totalExpense = 0
                 dataExpense.value = mapExpense
             }, {
-                println("throwww")
+                println("throwww ${it.message}")
             })
         )
     }
@@ -126,26 +122,62 @@ class ExpenseRepository(val expenseDao: ExpenseDao) {
             Log.e(TAG, "failed get total expense by type")
         }))
 
-    }
-
-
-
-    fun getExpenseAllType() {
-        println("get expense all type ")
-        val types = listOf("Shopping", "Entertainment", "Transportation", "Foods", "Others")
-        for (type in types) {
-            dispose.add(
-                expenseDao.getTotalExpenseByType(type).defaultIfEmpty(0).subscribe({ total ->
-                    map.put(type, total);
-                }, {
-                    Log.e(TAG, "failed get total expense by type")
-                })
-            )
-        }
-
-        dataTotalExpenseAllType.postValue(map)
 
     }
+
+
+
+//    fun getExpenseAllType() {
+//        println("get expense all type ")
+//        val types = listOf("Shopping", "Entertainment", "Transportation", "Foods", "Others")
+//        dispose.add(
+//            expenseDao.getTotalExpenseByType("Shopping").defaultIfEmpty(0).subscribe({ total ->
+//                println("cek expanse all type Shopping, $total")
+//                map.put("Shopping", total);
+//            }, {
+//                Log.e(TAG, "failed get total expense by type")
+//            })
+//        )
+//
+//        dispose.add(
+//            expenseDao.getTotalExpenseByType("Entertainment").defaultIfEmpty(0).subscribe({ total ->
+//                println("cek expanse all type Entertainment, $total")
+//                map.put("Entertainment", total);
+//            }, {
+//                Log.e(TAG, "failed get total expense by type")
+//            })
+//        )
+//
+//        dispose.add(
+//            expenseDao.getTotalExpenseByType("Transportation").defaultIfEmpty(0).subscribe({ total ->
+//                println("cek expanse all type Shopping, $total")
+//                map.put("Shopping", total);
+//            }, {
+//                Log.e(TAG, "failed get total expense by type")
+//            })
+//        )
+//
+//        dispose.add(
+//            expenseDao.getTotalExpenseByType("Shopping").defaultIfEmpty(0).subscribe({ total ->
+//                println("cek expanse all type Shopping, $total")
+//                map.put("Shopping", total);
+//            }, {
+//                Log.e(TAG, "failed get total expense by type")
+//            })
+//        )
+//
+//        dispose.add(
+//            expenseDao.getTotalExpenseByType("Shopping").defaultIfEmpty(0).subscribe({ total ->
+//                println("cek expanse all type Shopping, $total")
+//                map.put("Shopping", total);
+//            }, {
+//                Log.e(TAG, "failed get total expense by type")
+//            })
+//        )
+//
+//        dataTotalExpenseAllType.postValue(map)
+//
+//    }
 
 
     fun dispose() {
