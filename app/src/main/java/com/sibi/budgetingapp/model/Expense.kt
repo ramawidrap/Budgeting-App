@@ -1,20 +1,23 @@
 package com.sibi.budgetingapp.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 @Entity(tableName = "expense")
 data class Expense(
     @PrimaryKey(autoGenerate = true)
     var id:Int,
     @ColumnInfo
-    override var title: String,
+    var title: String,
     @ColumnInfo
-    override var amount: String,
+     var amount: Int,
     @ColumnInfo
-    override var deskripsi: String,
+    var type: String,
+     var deskripsi: String,
     @ColumnInfo
-    override var date: String
-) : BaseModel
+    var date: String
+) : Parcelable

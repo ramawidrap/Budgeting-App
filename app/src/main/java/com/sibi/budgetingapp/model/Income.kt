@@ -12,11 +12,11 @@ data class Income(
     @PrimaryKey(autoGenerate = true)
     var id:Int,
     @ColumnInfo
-    override var title:String,
+    var title:String,
     @ColumnInfo
-    override var amount: Int,
+    var amount: Int,
     @ColumnInfo
-    override var deskripsi: String,
+    var deskripsi: String,
     @ColumnInfo
-    override var date: String
-) : BaseModel, Parcelable
+    var date: String
+) : Parcelable

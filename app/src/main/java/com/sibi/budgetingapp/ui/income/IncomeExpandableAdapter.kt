@@ -1,4 +1,4 @@
-package com.sibi.budgetingapp.ui
+package com.sibi.budgetingapp.ui.income
 
 import android.content.Context
 import android.content.Intent
@@ -6,18 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.ExpandableListView
 import android.widget.ImageView
 import android.widget.TextView
 import com.sibi.budgetingapp.R
-import com.sibi.budgetingapp.model.BaseModel
 import com.sibi.budgetingapp.model.Income
-import com.sibi.budgetingapp.source.IncomeViewModel
+import com.sibi.budgetingapp.source.viewmodel.IncomeViewModel
 
-class ExpandableAdapter<T : BaseModel>(
+class IncomeExpandableAdapter(
     private val context: Context,
+    private val rv_income : ExpandableListView,
     private val incomeViewModel: IncomeViewModel,
-    private val hashMap: HashMap<String, ArrayList<T>>,
-    private val headerList: List<String>
+    var hashMap: HashMap<String, ArrayList<Income>>,
+    var headerList: List<String>
 ) : BaseExpandableListAdapter() {
     override fun getGroup(groupPosition: Int): Any {
         return groupPosition;
@@ -68,7 +69,7 @@ class ExpandableAdapter<T : BaseModel>(
         parent: ViewGroup?
     ): View {
         var convertView = convertView
-        val child = getChild(groupPosition, childPosition) as BaseModel
+        val child = getChild(groupPosition, childPosition) as Income
         if (convertView == null) {
             convertView = LayoutInflater.from(parent!!.context)
                 .inflate(R.layout.component_list, parent, false)
@@ -88,22 +89,30 @@ class ExpandableAdapter<T : BaseModel>(
         return hashMap.size
     }
 
-    fun bindToView(convertView: View?, child: BaseModel) {
+    fun bindToView(convertView: View?, child: Income) {
         val name = convertView!!.findViewById<TextView>(R.id.tv_name)
         val tanggal = convertView.findViewById<TextView>(R.id.tv_date)
         val value = convertView.findViewById<TextView>(R.id.tv_value)
         val deleteIcon = convertView.findViewById<ImageView>(R.id.icon_delete)
         val editIcon = convertView.findViewById<ImageView>(R.id.icon_edit)
         name.text = child.title
-        value.text = child.amount
+        value.text = child.amount.toString()
         tanggal.text = child.date
 
         deleteIcon.setOnClickListener {
             incomeViewModel.deleteData(child as Income);
+            for(x in 0 until groupCount) {
+                if(rv_income.isGroupExpanded(x)) {
+                    rv_income.expandGroup(x)
+                }
+                else {
+                    rv_income.collapseGroup(x)
+                }
+            }
         }
 
         editIcon.setOnClickListener {
-            val intent = Intent(context, EditActivity::class.java)
+            val intent = Intent(context, IncomeEditActivity::class.java)
             intent.putExtra("income", child as Income)
             context.startActivity(intent)
         }

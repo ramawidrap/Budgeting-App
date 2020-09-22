@@ -5,36 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
-        <TextView
-            app:layout_constraintVertical_chainStyle="spread"
-            app:layout_constraintVertical_bias="0.2"
-            app:layout_constraintBottom_toTopOf="@id/tv_valueBalance"
-            android:id="@+id/tv_titleBalance"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:orientation="vertical"
+            android:id="@+id/container_title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/balance"
-            android:textStyle="bold"
-            android:textSize="27sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintBottom_toTopOf="@id/tv_valueBalance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_titleBalance"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal|center"
+                android:text="@string/balance"
+                android:textSize="27sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:text="Budget"
+                app:layout_constraintHorizontal_bias="0.95"
+                android:id="@+id/button_budget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
         <TextView
             android:id="@+id/tv_valueBalance"
             app:layout_constraintVertical_bias="0.1"
-            app:layout_constraintTop_toBottomOf="@id/tv_titleBalance"
+            app:layout_constraintTop_toBottomOf="@id/container_title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@id/container_total"
             android:textSize="18sp"
-            android:text="Rp5000.000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -58,6 +85,7 @@
                 android:text="Total Income:\n Rp5000.000"/>
 
             <TextView
+                android:id="@+id/tv_totalExpense"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:layout_width="0dp"

@@ -5,6 +5,7 @@ import androidx.room.OnConflictStrategy.REPLACE
 import com.sibi.budgetingapp.model.Income
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 @Dao
@@ -23,6 +24,6 @@ interface IncomeDao {
     fun getAll() : Flowable<List<Income>>
 
     @Query("select sum(amount) from income")
-    fun totalAmount() : Single<Int>
+    fun totalAmount() : Flowable<Int>
 
 }

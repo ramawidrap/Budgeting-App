@@ -1,10 +1,9 @@
 package com.sibi.budgetingapp.di
 
-import androidx.fragment.app.Fragment
+import com.sibi.budgetingapp.di.viewmodel_module.ExpenseViewModelModule
 import com.sibi.budgetingapp.di.viewmodel_module.IncomeViewModelModule
-import com.sibi.budgetingapp.source.IncomeViewModel
-import com.sibi.budgetingapp.ui.ExpenseFragment
-import com.sibi.budgetingapp.ui.IncomeFragment
+import com.sibi.budgetingapp.ui.expense.ExpenseFragment
+import com.sibi.budgetingapp.ui.income.IncomeFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -12,5 +11,8 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentBuilderModule {
     @ContributesAndroidInjector(modules = [IncomeViewModelModule::class])
     abstract fun contributeIncomeFragment() : IncomeFragment
+
+    @ContributesAndroidInjector(modules = [ExpenseViewModelModule::class])
+    abstract fun contributeExpenseFragment() : ExpenseFragment
 
 }

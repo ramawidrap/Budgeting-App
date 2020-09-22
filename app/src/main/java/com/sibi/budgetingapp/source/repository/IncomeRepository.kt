@@ -1,4 +1,4 @@
-package com.sibi.budgetingapp.source
+package com.sibi.budgetingapp.source.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -15,20 +15,27 @@ class IncomeRepository @Inject constructor(val incomeDao: IncomeDao) {
 
     private val dispose: CompositeDisposable = CompositeDisposable()
     val dataIncome = MutableLiveData<HashMap<String, ArrayList<Income>>>()
+    private var totalIncome = 0;
+    val dataTotalIncome = MutableLiveData<Int>()
 
     init {
         getData()
+
     }
+
 
     fun getData() {
         dispose.add(
             incomeDao.getAll().subscribeOn(Schedulers.computation()).observeOn(
                 AndroidSchedulers.mainThread()
             ).subscribe({ incomes ->
-                print("cek update")
                 val mapIncome = HashMap<String, ArrayList<Income>>()
                 val listHeader = ArrayList<String>()
+                if(incomes.isEmpty()) {
+                    totalIncome = 0
+                }
                 incomes.map { income ->
+                    totalIncome += income.amount
                     if (mapIncome.containsKey(income.date)) {
                         mapIncome[income.date]!!.add(income);
                         mapIncome.put(income.date, mapIncome[income.date]!!)
@@ -38,6 +45,7 @@ class IncomeRepository @Inject constructor(val incomeDao: IncomeDao) {
                         mapIncome.put(income.date, arrayIncome)
                     }
                 }
+                dataTotalIncome.postValue(totalIncome)
                 dataIncome.postValue(mapIncome)
             }, {
                 println("throwww")

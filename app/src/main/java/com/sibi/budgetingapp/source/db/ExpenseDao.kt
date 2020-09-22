@@ -4,6 +4,7 @@ import androidx.room.*
 import com.sibi.budgetingapp.model.Expense
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 @Dao
@@ -17,9 +18,12 @@ interface ExpenseDao {
     @Update
     fun updateExpense(income: Expense) : Completable
 
-    @Query("select * from income")
+    @Query("select * from expense")
     fun getAll() : Flowable<List<Expense>>
 
     @Query("select sum(amount) from expense")
-    fun totalAmount() : Single<Int>
+    fun totalAmount() : Flowable<Int>
+
+    @Query("select sum(amount) from expense where type=:type ")
+    fun getTotalExpenseByType(type:String) : Flowable<Int>
 }

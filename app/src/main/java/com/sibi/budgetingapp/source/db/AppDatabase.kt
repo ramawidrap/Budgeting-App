@@ -10,7 +10,6 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun incomeDao() : IncomeDao
     abstract fun expenseDao() : ExpenseDao
-    abstract fun generalDao() : GeneralDao
 
 
 }

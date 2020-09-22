@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.room.Room
 import com.sibi.budgetingapp.source.db.AppDatabase
 import com.sibi.budgetingapp.source.db.ExpenseDao
-import com.sibi.budgetingapp.source.db.GeneralDao
 import com.sibi.budgetingapp.source.db.IncomeDao
+import com.sibi.budgetingapp.source.repository.ExpenseRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -32,7 +32,14 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideGeneralDao(appDatabase: AppDatabase) : GeneralDao {
-        return appDatabase.generalDao()
+    fun provideExpenseRepository(expenseDao: ExpenseDao) : ExpenseRepository {
+        return ExpenseRepository(expenseDao)
     }
+
+//    @Singleton
+//    @Provides
+//    fun provideGeneralDao(appDatabase: AppDatabase) : GeneralDao {
+//        return appDatabase.generalDao()
+//    }
+
 }

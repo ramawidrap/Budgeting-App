@@ -17,4 +17,17 @@
     <string name="amount">Amount</string>
     <string name="pick_date">Pick Date</string>
     <string name="category">Category</string>
+    <string name="shopping">Shopping</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="transportation">Transportation</string>
+    <string name="foods">Foods</string>
+    <string name="others">Others</string>
+
+    <string-array name="ExpenseType">
+        <item>Shopping</item>
+        <item>Entertainment</item>
+        <item>Transportation</item>
+        <item>Foods</item>
+        <item>Others</item>
+    </string-array>
 </resources>

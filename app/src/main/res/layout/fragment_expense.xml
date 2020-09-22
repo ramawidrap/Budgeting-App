@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ExpenseFragment">
+    tools:context=".ui.expense.ExpenseFragment">
 
     <ExpandableListView
-        android:id="@+id/rv_income"
+        android:id="@+id/rv_expense"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_expense"
         android:layout_margin="30dp"
         android:layout_gravity="bottom|end"
         android:layout_width="wrap_content"

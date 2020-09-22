@@ -1,4 +1,4 @@
-package com.sibi.budgetingapp.ui
+package com.sibi.budgetingapp.ui.income
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
@@ -7,14 +7,15 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import com.sibi.budgetingapp.R
 import com.sibi.budgetingapp.model.Income
-import com.sibi.budgetingapp.source.IncomeViewModel
+import com.sibi.budgetingapp.source.viewmodel.IncomeViewModel
+import com.sibi.budgetingapp.utils.setCalendar
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_edit.*
+import kotlinx.android.synthetic.main.activity_income_edit.*
 import java.util.*
 import javax.inject.Inject
 
 
-class EditActivity : DaggerAppCompatActivity() {
+class IncomeEditActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -23,51 +24,35 @@ class EditActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit)
+        setContentView(R.layout.activity_income_edit)
         val income = intent.getParcelableExtra<Income>("income")
-        bindToView(income)
         incomeViewModel = ViewModelProvider(this, viewModelFactory).get(IncomeViewModel::class.java)
+        bindToView(income)
 
 
-        et_datePicker.setOnClickListener {
-            setCalendar(et_datePicker)
-        }
-        btn_simpan.setOnClickListener {
-            saveData(income)
-        }
+
+
     }
 
 
     private fun bindToView(income: Income?) {
         if (income != null) {
             et_title.setText(income.title)
-            et_amount.setText(income.amount)
+            et_amount.setText(income.amount.toString())
             et_datePicker.setText(income.date)
             et_deskripsi.setText(income.deskripsi)
         }
 
+        et_datePicker.setOnClickListener {
+            setCalendar(et_datePicker,this)
+        }
+        btn_simpan.setOnClickListener {
+            saveData(income)
+        }
+
     }
 
-    private fun setCalendar(v: EditText) {
-        val cldr: Calendar = Calendar.getInstance()
-        val day: Int = cldr.get(Calendar.DAY_OF_MONTH)
-        val month: Int = cldr.get(Calendar.MONTH)
-        val year: Int = cldr.get(Calendar.YEAR)
-        // date picker dialog
-        // date picker dialog
-        val picker = DatePickerDialog(
-            this,
-            OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                v.setText(
-                    dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year
-                )
-            },
-            year,
-            month,
-            day
-        )
-        picker.show()
-    }
+
 
     private fun saveData(income: Income?) {
         if (et_title.text.isNullOrEmpty()) {
